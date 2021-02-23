@@ -20,9 +20,15 @@ class IngestSpec extends FlatSpec with Matchers {
     val source = Source.fromChars(Array('x', '\n', '4', '2'))
     val ingester = new Ingest[Int]()
     val xys = ingester(source).toSeq
+    //val hw = "Hello World"
+    //def int  = "Hello world"
+    xys should have size 1
+    xys.head should matchPattern{
+      case Success(42) =>
+    }
+    
     // check that xys has exactly one element, consisting of Success(42) -- 10 points
     // TO BE IMPLEMENTED
-    ???
   }
 
   it should "work for movie database" in {

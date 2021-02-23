@@ -1,5 +1,6 @@
 package edu.neu.coe.csye7200.asstmd
 
+import java.text.ParseException
 import scala.collection.mutable
 import scala.io.Source
 import scala.util.Try
@@ -107,7 +108,7 @@ object Movie extends App {
     //Hint: Think of the return type of method. Also, you need the apply method which is similar as a construction method in java.
     //The source file is a csv file which is separated by ","
     // 11 points
-    def fromString(w: String): Try[Movie] = ??? // TO BE IMPLEMENTED
+    def fromString(w: String): Try[Movie] = Try(apply(w.split(","))) // TO BE IMPLEMENTED
   }
 
   implicit object IngestibleMovie extends IngestibleMovie
@@ -130,11 +131,10 @@ object Movie extends App {
     * @return a list of Strings containing the specified elements in order
     */
   def elements(list: Seq[String], indices: Int*): List[String] = {
-    val x = mutable.ListBuffer[String]()
+    val x: Seq[String] = for(index <- indices) yield list(index)
     // Hint: form a new list which is consisted by the elements in list in position indices. Int* means array of Int.
     // 6 points
     // TO BE IMPLEMENTED
-    ???
     x.toList
   }
 
@@ -216,6 +216,11 @@ object Rating {
     */
   // Hint: This should similar to apply method in Object Name. The parameter of apply in case match should be same as case class Rating
   // 13 points
-  def apply(s: String): Rating = ??? // TO BE IMPLEMENTED
-
+  def apply(s: String): Rating = s match {
+    case rRating(code, _, null) => apply(code, None)
+    case rRating(code, _, age) => apply(code, Some(age.toInt))
+    case _ => throw ParseException(s"throw error: $s")
+  }
 }
+case class ParseException(w: String) extends Exception(w)
+     // TO BE IMPLEMENTED
